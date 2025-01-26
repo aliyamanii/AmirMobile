@@ -4,6 +4,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from api.serializers import *
 
 
+from django.db.models import OuterRef, Exists
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -15,7 +17,7 @@ class BrandViewSet(viewsets.ModelViewSet):
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()
+    queryset = Order.objects.filter(Exists(OrderDetail.objects.filter(order=OuterRef('id'))),)
 
 class OrderDetailViewSet(viewsets.ModelViewSet):
     serializer_class = OrderDetailSerializer

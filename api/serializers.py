@@ -36,7 +36,6 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         read_only_fields = ['total_cost']
 
     def create(self, validated_data):
-        
         product = validated_data['product']['id']
         del validated_data['product']
 
@@ -47,5 +46,5 @@ class OrderDetailSerializer(serializers.ModelSerializer):
 
         validated_data['order'] = pid
         validated_data['total_cost'] = product.price * validated_data['quantity']
-        super().create(validated_data)
-        return validated_data
+        
+        return super().create(validated_data)
